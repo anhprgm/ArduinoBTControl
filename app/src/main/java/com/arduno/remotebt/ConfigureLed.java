@@ -45,7 +45,7 @@ public class ConfigureLed extends AppCompatActivity {
 
         });
         binding.stop.setOnClickListener(v -> {
-            connectedThread.cancel();
+
         });
     }
 
