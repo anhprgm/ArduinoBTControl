@@ -1,8 +1,10 @@
-package com.arduno.remotebt;
+package com.arduno.remotebt.core;
 
 
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
+
+import com.arduno.remotebt.base.Listener;
 
 import java.io.IOException;
 import java.io.InputStream;

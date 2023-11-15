@@ -1,4 +1,4 @@
-package com.arduno.remotebt;
+package com.arduno.remotebt.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -8,13 +8,17 @@ import android.bluetooth.BluetoothManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.arduno.remotebt.MyApplication;
+import com.arduno.remotebt.base.BaseActivity;
+import com.arduno.remotebt.core.ConnectThread;
+import com.arduno.remotebt.core.ConnectedClass;
+import com.arduno.remotebt.core.ConnectedThread;
 import com.arduno.remotebt.databinding.ActivityMainBinding;
 
 import java.util.Set;
@@ -22,15 +26,13 @@ import java.util.UUID;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
-    private ActivityMainBinding binding;
     private static final String TAG = "HUUDIEN";
     private static final int REQUEST_ENABLE_BT = 1;
     public static Handler handler;
@@ -38,14 +40,12 @@ public class MainActivity extends AppCompatActivity {
     BluetoothDevice arduinoBTModule = null;
     UUID arduinoUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     ConnectedThread connectedThread;
+
     @SuppressLint("CheckResult")
     @RequiresApi(api = Build.VERSION_CODES.M)
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
 
+    @Override
+    public void initView() {
         BluetoothManager bluetoothManager = getSystemService(BluetoothManager.class);
         BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
         handler = new Handler(Looper.getMainLooper()) {
@@ -67,9 +67,8 @@ public class MainActivity extends AppCompatActivity {
             ConnectThread connectThread = new ConnectThread(arduinoBTModule, arduinoUUID, handler);
             connectThread.run();
             if (connectThread.getMmSocket().isConnected()) {
-                 connectedThread = new ConnectedThread(connectThread.getMmSocket());
-                if(connectedThread.getMmInStream() != null && connectedThread!= null)
-                {
+                connectedThread = new ConnectedThread(connectThread.getMmSocket());
+                if(connectedThread.getMmInStream() != null && connectedThread!= null) {
                     ConnectedClass connected = new ConnectedClass();
                     connected.setConnected(true);
                     emitter.onNext(connected);
@@ -135,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                         subscribe(connectedToBTDevice -> {
                             //valueRead returned by the onNext() from the Observable
                             if(connectedToBTDevice.isConnected()){
-                               binding.nextActivity.setEnabled(true);
+                                binding.nextActivity.setEnabled(true);
                             }
                             //We just scratched the surface with RxAndroid
                         });
@@ -148,5 +147,10 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, ConfigureLed.class);
             startActivity(intent);
         });
+    }
+
+    @Override
+    protected ActivityMainBinding getBinding() {
+        return ActivityMainBinding.inflate(getLayoutInflater());
     }
 }

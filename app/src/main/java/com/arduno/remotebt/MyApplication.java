@@ -2,6 +2,8 @@ package com.arduno.remotebt;
 
 import android.app.Application;
 
+import com.arduno.remotebt.core.ConnectedThread;
+
 public class MyApplication extends Application
 {
     private static MyApplication sInstance;

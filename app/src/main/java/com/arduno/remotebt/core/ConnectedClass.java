@@ -1,4 +1,4 @@
-package com.arduno.remotebt;
+package com.arduno.remotebt.core;
 
 public class ConnectedClass {
     String message;

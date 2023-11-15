@@ -1,4 +1,4 @@
-package com.arduno.remotebt;
+package com.arduno.remotebt.core;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;

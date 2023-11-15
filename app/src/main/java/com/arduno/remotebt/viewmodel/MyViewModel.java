@@ -1,4 +1,4 @@
-package com.arduno.remotebt;
+package com.arduno.remotebt.viewmodel;
 
 
 import androidx.lifecycle.MutableLiveData;

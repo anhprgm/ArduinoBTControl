@@ -1,30 +1,27 @@
-package com.arduno.remotebt;
+package com.arduno.remotebt.activity;
 
-import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
+import com.arduno.remotebt.MyApplication;
+import com.arduno.remotebt.base.BaseActivity;
+import com.arduno.remotebt.core.ConnectedThread;
 import com.arduno.remotebt.databinding.ActivityConfigureLedBinding;
+import com.arduno.remotebt.viewmodel.MyViewModel;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-public class ConfigureLed extends AppCompatActivity {
+public class ConfigureLed extends BaseActivity<ActivityConfigureLedBinding> {
     private static final String TAG = "HUUDIEN";
     boolean isReceive = true;
 
     private MyViewModel viewModel;
-    private ActivityConfigureLedBinding binding;
     ConnectedThread connectedThread;
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityConfigureLedBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+    public void initView() {
         connectedThread = MyApplication.getApplication().getCurrentConnectedThread();
 
         viewModel = new ViewModelProvider(this).get(MyViewModel.class);
@@ -51,7 +48,11 @@ public class ConfigureLed extends AppCompatActivity {
             receiverMessage();
         });
 
+    }
 
+    @Override
+    protected ActivityConfigureLedBinding getBinding() {
+        return ActivityConfigureLedBinding.inflate(getLayoutInflater());
     }
 
     void receiverMessage() {
