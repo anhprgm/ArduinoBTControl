@@ -69,7 +69,6 @@ public class ConnectedThread extends Thread {
                     bytes++;
                 }
                 onDataReceived.onMessageReceived(valueRead);
-                Thread.sleep(100);
             } catch (Exception e) {
                 break;
             }

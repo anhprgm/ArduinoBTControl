@@ -40,7 +40,7 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/tat" />
 
-  <Button
+  <com.google.android.material.switchmaterial.SwitchMaterial
       android:id="@+id/stop"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"

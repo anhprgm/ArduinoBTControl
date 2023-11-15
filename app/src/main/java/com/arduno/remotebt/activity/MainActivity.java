@@ -51,14 +51,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         handler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(@NonNull Message msg) {
-                switch (msg.what) {
+                if (msg.what == ERROR_READ) {
+                    String arduinoMsg = msg.obj.toString(); // Read message from Arduino
 
-                    case ERROR_READ:
-                        String arduinoMsg = msg.obj.toString(); // Read message from Arduino
-
-                        Toast.makeText(MainActivity.this, arduinoMsg,
-                                Toast.LENGTH_LONG).show();
-                        break;
+                    Toast.makeText(MainActivity.this, arduinoMsg,
+                            Toast.LENGTH_LONG).show();
                 }
             }
         };
@@ -68,6 +65,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             connectThread.run();
             if (connectThread.getMmSocket().isConnected()) {
                 connectedThread = new ConnectedThread(connectThread.getMmSocket());
+                MyApplication.getApplication().setBluetoothSocket(connectThread.getMmSocket());
                 if(connectedThread.getMmInStream() != null && connectedThread!= null) {
                     ConnectedClass connected = new ConnectedClass();
                     connected.setConnected(true);
