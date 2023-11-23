@@ -14,13 +14,17 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.arduno.remotebt.MyApplication;
+import com.arduno.remotebt.DataListeningService;
 import com.arduno.remotebt.base.BaseActivity;
 import com.arduno.remotebt.core.ConnectThread;
 import com.arduno.remotebt.core.ConnectedClass;
 import com.arduno.remotebt.core.ConnectedThread;
 import com.arduno.remotebt.databinding.ActivityMainBinding;
+import com.arduno.remotebt.dialogs.DialogDevices;
+import com.arduno.remotebt.viewmodel.MyViewModel;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -41,11 +45,20 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     UUID arduinoUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     ConnectedThread connectedThread;
 
+    private DialogDevices dialogDevices;
+
     @SuppressLint("CheckResult")
     @RequiresApi(api = Build.VERSION_CODES.M)
 
     @Override
     public void initView() {
+        singleton.setViewModel(new MyViewModel());
+        viewModel = singleton.getViewModel();
+        dialogDevices = (DialogDevices) new DialogDevices.ExtendBuilder(this)
+                .setCancelable(true)
+                .setCanOntouchOutside(false)
+                .build();
+
         BluetoothManager bluetoothManager = getSystemService(BluetoothManager.class);
         BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
         handler = new Handler(Looper.getMainLooper()) {
@@ -65,7 +78,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             connectThread.run();
             if (connectThread.getMmSocket().isConnected()) {
                 connectedThread = new ConnectedThread(connectThread.getMmSocket());
-                MyApplication.getApplication().setBluetoothSocket(connectThread.getMmSocket());
+                singleton.setBluetoothSocket(connectThread.getMmSocket());
                 if(connectedThread.getMmInStream() != null && connectedThread!= null) {
                     ConnectedClass connected = new ConnectedClass();
                     connected.setConnected(true);
@@ -75,15 +88,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             emitter.onComplete();
         });
 
-        //Display all the linked BT Devices
         binding.seachDevices.setOnClickListener(view -> {
-            //Check if the phone supports BT
             if (bluetoothAdapter == null) {
-                // Device doesn't support Bluetooth
                 Log.d(TAG, "Device doesn't support Bluetooth");
             } else {
                 Log.d(TAG, "Device support Bluetooth");
-                //Check BT enabled. If disabled, we ask the user to enable BT
                 if (!bluetoothAdapter.isEnabled()) {
                     Log.d(TAG, "Bluetooth is disabled");
                     Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -100,51 +109,59 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                 } else {
                     Log.d(TAG, "Bluetooth is enabled");
                 }
-                String btDevicesString="";
-                Set< BluetoothDevice > pairedDevices = bluetoothAdapter.getBondedDevices();
+                Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
+                List<BluetoothDevice> listDevices = new ArrayList<>(pairedDevices);
+                viewModel.listDevices.postValue(pairedDevices);
+                dialogDevices.mShow(listDevices);
 
-                if (pairedDevices.size() > 0) {
-                    // There are paired devices. Get the name and address of each paired device.
-                    for (BluetoothDevice device: pairedDevices) {
-                        String deviceName = device.getName();
-                        String deviceHardwareAddress = device.getAddress(); // MAC address
-                        Log.d(TAG, "deviceName:" + deviceName);
-                        Log.d(TAG, "deviceHardwareAddress:" + deviceHardwareAddress);
-                        btDevicesString=btDevicesString+deviceName+" || "+deviceHardwareAddress+"\n";
-                        if (deviceName.equals("HC-05")) {
-                            Log.d(TAG, "HC-05 found");
-                            arduinoUUID = device.getUuids()[0].getUuid();
-                            arduinoBTModule = device;
-                            binding.connectToDevice.setEnabled(true);
+            }
+        });
+        dialogDevices.setOnItemClickListener(device -> {
+            Log.d(TAG, "Device Name Clicked: " + device.getName());
+            arduinoUUID = device.getUuids()[0].getUuid();
+            arduinoBTModule = device;
+
+            connectToBTObservable.
+                    observeOn(AndroidSchedulers.mainThread()).
+                    subscribeOn(Schedulers.io()).
+                    subscribe(connectedToBTDevice -> {
+                        //valueRead returned by the onNext() from the Observable
+                        if (connectedToBTDevice.isConnected()) {
+
+                            singleton.setMmInputStream(connectedThread.getMmInStream());
+                            singleton.setViewModel(viewModel);
+                            Intent intent = new Intent(this, DataListeningService.class);
+                            startService(intent);
+//                            mmInputStream = connectedThread.getMmInStream();
+//                            beginListenForData();
                         }
-                        binding.btDevices.setText(btDevicesString);
-                    }
-                }
-            }
-            Log.d(TAG, "Button Pressed");
+                    });
         });
 
-        binding.connectToDevice.setOnClickListener(view -> {
-            if (arduinoBTModule != null) {
-                connectToBTObservable.
-                        observeOn(AndroidSchedulers.mainThread()).
-                        subscribeOn(Schedulers.io()).
-                        subscribe(connectedToBTDevice -> {
-                            //valueRead returned by the onNext() from the Observable
-                            if(connectedToBTDevice.isConnected()){
-                                binding.nextActivity.setEnabled(true);
-                            }
-                            //We just scratched the surface with RxAndroid
-                        });
-
+        viewModel.message.observe(this, s -> {
+            if (s.length() < 3) return;
+            Log.d(TAG, "initView: " + s);
+            String firstThree = s.substring(0, 3);
+            switch (firstThree) {
+                case "TPR":
+                    binding.tvTemperature.setText("Temperature: " + s.substring(5) + "°C");
+                    break;
+                case "HMR":
+                    binding.tvHumidity.setText("Humidity: " + s.substring(5) + "%");
+                    break;
             }
         });
-
-        binding.nextActivity.setOnClickListener(v -> {
-            MyApplication.getApplication().setupConnectedThread(connectedThread);
-            Intent intent = new Intent(MainActivity.this, ConfigureLed.class);
-            startActivity(intent);
+        binding.ivAddRemote.setOnClickListener(v -> {
+            singleton.setConnectedThread(connectedThread);
+            startActivity(new Intent(MainActivity.this, ConfigureLed.class));
         });
+    }
+
+
+    private void disConnectedDevice() {
+        singleton.setConnectedThread(null);
+        arduinoBTModule = null;
+        connectedThread.cancel();
     }
 
     @Override

@@ -7,50 +7,53 @@
     android:background="@color/main_color"
     tools:context=".activity.MainActivity">
 
-    <!--    <TextView-->
-    <!--        android:id="@+id/btDevices"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:text=""-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintHorizontal_bias="0.498"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent"-->
-    <!--        app:layout_constraintVertical_bias="0.24" />-->
 
-    <!--    <Button-->
-    <!--        android:id="@+id/seachDevices"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:text="Search linked BT devices"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent"-->
-    <!--        tools:ignore="MissingConstraints" />-->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_temperature"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="15dp"
+        app:cardBackgroundColor="#8E24AA"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/seachDevices">
 
-    <!--    <Button-->
-    <!--        android:id="@+id/connectToDevice"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginStart="112dp"-->
-    <!--        android:layout_marginTop="360dp"-->
-    <!--        android:enabled="false"-->
-    <!--        android:text="Connect to HC-05"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent"-->
-    <!--        tools:ignore="MissingConstraints" />-->
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="20dp">
 
-    <!--    <Button-->
-    <!--        android:id="@+id/nextActivity"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginStart="128dp"-->
-    <!--        android:layout_marginTop="484dp"-->
-    <!--        android:text="Set Led Color"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent"-->
-    <!--        android:enabled="false"/>-->
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_temperature"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="Temperature"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginVertical="10dp"
+                android:background="@color/main_color" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_humidity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="Humidity"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.cardview.widget.CardView>
+
+
     <androidx.cardview.widget.CardView
         android:id="@+id/seachDevices"
         android:layout_width="wrap_content"
@@ -97,7 +100,7 @@
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
         app:layout_constraintHeight_percent="0.18"
-        app:layout_constraintTop_toBottomOf="@id/seachDevices">
+        app:layout_constraintTop_toBottomOf="@id/cv_temperature">
 
         <androidx.cardview.widget.CardView
             android:layout_width="0dp"

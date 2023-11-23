@@ -93,5 +93,11 @@ public class ConnectedThread extends Thread {
         }
     }
 
-
+    public void cancel() {
+        try {
+            mmSocket.close();
+        } catch (IOException e) {
+            Log.e("Cancel Error", "Could not close the connect socket", e);
+        }
+    }
 }
