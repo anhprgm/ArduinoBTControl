@@ -127,9 +127,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                     subscribe(connectedToBTDevice -> {
                         //valueRead returned by the onNext() from the Observable
                         if (connectedToBTDevice.isConnected()) {
-
+                            Log.d(TAG, "initView: " + "Connected");
                             singleton.setMmInputStream(connectedThread.getMmInStream());
                             singleton.setViewModel(viewModel);
+
                             Intent intent = new Intent(this, DataListeningService.class);
                             startService(intent);
 //                            mmInputStream = connectedThread.getMmInStream();
@@ -155,6 +156,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             singleton.setConnectedThread(connectedThread);
             startActivity(new Intent(MainActivity.this, ConfigureLed.class));
         });
+        binding.llTemperature.setOnClickListener(v -> connectedThread.send("THG\n"));
     }
 
 
@@ -162,6 +164,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         singleton.setConnectedThread(null);
         arduinoBTModule = null;
         connectedThread.cancel();
+        Intent intent = new Intent(this, DataListeningService.class);
+        stopService(intent);
     }
 
     @Override

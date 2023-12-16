@@ -20,12 +20,10 @@ public class ConfigureLed extends BaseActivity<ActivityConfigureLedBinding> {
         connectedThread = singleton.getConnectedThread();
         bluetoothSocket = singleton.getBluetoothSocket();
 
-
-
         binding.bat.setOnClickListener(v -> {
-            connectedThread.send("1");
+            connectedThread.send("IRS: BA45FF00\n");
         });
-        binding.tat.setOnClickListener(v -> connectedThread.send("0"));
+        binding.tat.setOnClickListener(v -> connectedThread.send("IRS: BA45FF00\n"));
 
         binding.stop.toggle();
         binding.stop.setOnCheckedChangeListener((buttonView, isChecked) -> {
