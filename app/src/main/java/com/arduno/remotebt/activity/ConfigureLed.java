@@ -21,9 +21,9 @@ public class ConfigureLed extends BaseActivity<ActivityConfigureLedBinding> {
         bluetoothSocket = singleton.getBluetoothSocket();
 
         binding.bat.setOnClickListener(v -> {
-            connectedThread.send("IRS: BA45FF00\n");
+            connectedThread.send("IRS: 69\n");
         });
-        binding.tat.setOnClickListener(v -> connectedThread.send("IRS: BA45FF00\n"));
+        binding.tat.setOnClickListener(v -> connectedThread.send("IRS: 20 45645 2014\n"));
 
         binding.stop.toggle();
         binding.stop.setOnCheckedChangeListener((buttonView, isChecked) -> {

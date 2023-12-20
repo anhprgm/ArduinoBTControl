@@ -35,6 +35,10 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.arduno.remotebt.ultils.Constants.HMR;
+import static com.arduno.remotebt.ultils.Constants.THG;
+import static com.arduno.remotebt.ultils.Constants.TPR;
+
 public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
     private static final String TAG = "HUUDIEN";
@@ -133,8 +137,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
                             Intent intent = new Intent(this, DataListeningService.class);
                             startService(intent);
-//                            mmInputStream = connectedThread.getMmInStream();
-//                            beginListenForData();
                         }
                     });
         });
@@ -144,19 +146,19 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             Log.d(TAG, "initView: " + s);
             String firstThree = s.substring(0, 3);
             switch (firstThree) {
-                case "TPR":
+                case TPR:
                     binding.tvTemperature.setText("Temperature: " + s.substring(5) + "°C");
                     break;
-                case "HMR":
+                case HMR:
                     binding.tvHumidity.setText("Humidity: " + s.substring(5) + "%");
                     break;
             }
         });
         binding.ivAddRemote.setOnClickListener(v -> {
             singleton.setConnectedThread(connectedThread);
-            startActivity(new Intent(MainActivity.this, ConfigureLed.class));
+            startActivity(new Intent(MainActivity.this, AddRemoteActivity.class));
         });
-        binding.llTemperature.setOnClickListener(v -> connectedThread.send("THG\n"));
+        binding.llTemperature.setOnClickListener(v -> connectedThread.send(THG + "\n"));
     }
 
 
