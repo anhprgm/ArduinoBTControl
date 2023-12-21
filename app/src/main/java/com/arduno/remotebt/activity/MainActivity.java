@@ -56,7 +56,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
     @Override
     public void initView() {
-        singleton.setViewModel(new MyViewModel());
+        singleton.setViewModel(new MyViewModel(this.getApplication()));
         viewModel = singleton.getViewModel();
         dialogDevices = (DialogDevices) new DialogDevices.ExtendBuilder(this)
                 .setCancelable(true)
