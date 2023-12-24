@@ -49,6 +49,10 @@ public class EditRemoteAdapter extends BaseRecyclerAdapter<BaseModel,
          binding.key.setText(baseModel.getKey());
          binding.value.setText(baseModel.getValue());
          binding.stt.setText("STT: " + (position + 1));
+
+         binding.value.setOnClickListener(v -> {
+            onItemClickListener.onItemClick(position);
+         });
       }
    }
 }

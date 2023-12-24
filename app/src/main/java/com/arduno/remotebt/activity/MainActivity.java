@@ -158,7 +158,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             singleton.setConnectedThread(connectedThread);
             startActivity(new Intent(MainActivity.this, AddRemoteActivity.class));
         });
-        binding.llTemperature.setOnClickListener(v -> connectedThread.send(THG + "\n"));
+        binding.llTemperature.setOnClickListener(v ->  connectedThread.send(THG + "\n"));
     }
 
 
