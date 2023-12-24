@@ -14,7 +14,7 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.arduno.remotebt.DataListeningService;
+import com.arduno.remotebt.core.DataListeningService;
 import com.arduno.remotebt.base.BaseActivity;
 import com.arduno.remotebt.core.ConnectThread;
 import com.arduno.remotebt.core.ConnectedClass;

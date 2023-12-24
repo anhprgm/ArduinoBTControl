@@ -30,7 +30,7 @@
         android:name=".activity.ConfigureLed"
         android:exported="false" />
 
-    <service android:name=".DataListeningService" />
+    <service android:name=".core.DataListeningService" />
 
     <activity
         android:name=".activity.MainActivity"

@@ -5,7 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.arduno.remotebt.R;
-import com.arduno.remotebt.database.BaseModel;
+import com.arduno.remotebt.database.DataModel;
 import com.arduno.remotebt.databinding.ItemListBinding;
 
 import java.util.List;
@@ -13,13 +13,13 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class EditRemoteAdapter extends BaseRecyclerAdapter<BaseModel,
+public class EditRemoteAdapter extends BaseRecyclerAdapter<DataModel,
         EditRemoteAdapter.ViewHolder> {
 
    private Context context;
-   private List<BaseModel> list;
+   private List<DataModel> list;
 
-   public EditRemoteAdapter(Context context, List<BaseModel> list) {
+   public EditRemoteAdapter(Context context, List<DataModel> list) {
       super(context, list);
       this.context = context;
       this.list = list;
@@ -45,9 +45,9 @@ public class EditRemoteAdapter extends BaseRecyclerAdapter<BaseModel,
          this.binding = ItemListBinding.bind(itemView);
       }
 
-      public void bindData(BaseModel baseModel, int position) {
-         binding.key.setText(baseModel.getKey());
-         binding.value.setText(baseModel.getValue());
+      public void bindData(DataModel dataModel, int position) {
+         binding.key.setText(dataModel.getKey());
+         binding.value.setText(dataModel.getValue());
          binding.stt.setText("STT: " + (position + 1));
 
          binding.value.setOnClickListener(v -> {

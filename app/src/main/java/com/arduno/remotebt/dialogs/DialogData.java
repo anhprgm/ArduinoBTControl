@@ -30,6 +30,9 @@ public class DialogData extends BaseDialog<DialogEditRemoteBinding, DialogData.E
 
     @Override
     protected void initListener() {
+        binding.cancel.setOnClickListener(v -> {
+            dismiss();
+        });
     }
 
     public static class ExtendBuilder extends BuilderDialog {

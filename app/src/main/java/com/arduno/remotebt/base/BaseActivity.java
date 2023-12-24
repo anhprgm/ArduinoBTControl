@@ -1,6 +1,7 @@
 package com.arduno.remotebt.base;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.arduno.remotebt.MySingleton;
 import com.arduno.remotebt.viewmodel.MyViewModel;
@@ -26,6 +27,10 @@ public abstract class BaseActivity<VB extends ViewBinding> extends AppCompatActi
    }
 
    public abstract void initView();
+
    protected abstract VB getBinding();
 
+   public void toast(String message) {
+      Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+   }
 }

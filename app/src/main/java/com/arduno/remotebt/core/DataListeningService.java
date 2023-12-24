@@ -1,10 +1,11 @@
-package com.arduno.remotebt;
+package com.arduno.remotebt.core;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 
+import com.arduno.remotebt.MySingleton;
 import com.arduno.remotebt.viewmodel.MyViewModel;
 
 import java.io.IOException;

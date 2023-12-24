@@ -4,12 +4,16 @@ package com.arduno.remotebt.viewmodel;
 import android.app.Application;
 import android.bluetooth.BluetoothDevice;
 
+import com.arduno.remotebt.activity.Mode;
+import com.arduno.remotebt.database.DataModel;
 import com.arduno.remotebt.database.Database;
 import com.arduno.remotebt.database.DatabaseManager;
 import com.arduno.remotebt.database.RemoteControl;
 import com.arduno.remotebt.database.Repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import androidx.lifecycle.MutableLiveData;
@@ -26,12 +30,17 @@ public class MyViewModel extends ViewModel {
 
     private Repository repository;
 
+    public Map<Mode, List<DataModel>> modeRemoteControlMap = new HashMap<>();
+    public MutableLiveData<Mode> modeEdited = new MutableLiveData<>();
+
     public MyViewModel(Application application) {
         this.repository = new DatabaseManager(Database.Companion.getInstance(application));
     }
+
     public void getListRemoteControl() {
-      repository.getLiveData().observeForever(remoteControls -> listDevice.postValue(remoteControls));
+        repository.getLiveData().observeForever(remoteControls -> listDevice.postValue(remoteControls));
     }
+
     public void insertRemoteControl(RemoteControl remoteControl) {
         repository.insert(remoteControl);
     }
