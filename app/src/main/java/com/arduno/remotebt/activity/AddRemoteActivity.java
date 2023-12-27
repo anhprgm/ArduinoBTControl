@@ -54,7 +54,7 @@ public class AddRemoteActivity extends BaseActivity<ActivityAddRemoteBinding> {
             if (mode == null) {
                 mode = new ArrayList<>();
             }
-            viewModel.insertRemoteControl(new RemoteControl(0, temp, power, mode));
+            viewModel.insertRemoteControl(new RemoteControl(0,"" ,temp, power, mode));
             viewModel.modeRemoteControlMap = new HashMap<>();
             finish();
         });
