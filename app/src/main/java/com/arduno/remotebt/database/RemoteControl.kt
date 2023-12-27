@@ -7,12 +7,13 @@ import androidx.room.PrimaryKey
 data class RemoteControl(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
+    var nameRemoteControl: String = "",
     var temp: List<DataModel> = ArrayList(),
     var mode: List<DataModel> = ArrayList(),
     var power: List<DataModel> = ArrayList(),
 )
 
 data class DataModel(
-    var key: String,
-    var value: String
+    var key: String = "",
+    var value: String = ""
 )

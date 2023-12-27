@@ -73,4 +73,19 @@
       app:layout_constraintTop_toBottomOf="@id/remote_btns"
       app:layout_constraintWidth_percent="0.2"
       app:tint="@color/black" />
+
+  <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/save"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="20dp"
+      android:background="@drawable/background_btn"
+      android:paddingHorizontal="25dp"
+      android:paddingVertical="15dp"
+      android:text="Save"
+      android:textColor="@color/white"
+      android:textSize="15sp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

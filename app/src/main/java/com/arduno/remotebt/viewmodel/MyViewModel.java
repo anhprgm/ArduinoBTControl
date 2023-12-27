@@ -26,7 +26,7 @@ public class MyViewModel extends ViewModel {
 
     public MutableLiveData<Set<BluetoothDevice>> listDevices = new MutableLiveData<>();
 
-    public MutableLiveData<List<RemoteControl>> listDevice = new MutableLiveData<>();
+    public MutableLiveData<List<RemoteControl>> listRemoteControl = new MutableLiveData<>();
 
     private Repository repository;
 
@@ -38,7 +38,7 @@ public class MyViewModel extends ViewModel {
     }
 
     public void getListRemoteControl() {
-        repository.getLiveData().observeForever(remoteControls -> listDevice.postValue(remoteControls));
+        repository.getLiveData().observeForever(remoteControls -> listRemoteControl.postValue(remoteControls));
     }
 
     public void insertRemoteControl(RemoteControl remoteControl) {

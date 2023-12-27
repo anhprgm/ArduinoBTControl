@@ -158,6 +158,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             singleton.setConnectedThread(connectedThread);
             startActivity(new Intent(MainActivity.this, AddRemoteActivity.class));
         });
+        viewModel.getListRemoteControl();
+        viewModel.listRemoteControl.observe(this, remoteControls -> {
+            Log.d(TAG, "initView: " + remoteControls.get(0).getTemp().get(0).getValue());
+        });
         binding.llTemperature.setOnClickListener(v ->  connectedThread.send(THG + "\n"));
     }
 

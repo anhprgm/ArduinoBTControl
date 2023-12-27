@@ -21,6 +21,9 @@
       android:theme="@style/Theme.ArduinoBTExampleLEDControl"
       tools:targetApi="31">
     <activity
+        android:name=".activity.ListRemoteActivity"
+        android:exported="false" />
+    <activity
         android:name=".activity.EditRemoteActivity"
         android:exported="false" />
     <activity
