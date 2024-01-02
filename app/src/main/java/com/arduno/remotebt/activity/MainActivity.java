@@ -14,11 +14,11 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.arduno.remotebt.core.DataListeningService;
 import com.arduno.remotebt.base.BaseActivity;
 import com.arduno.remotebt.core.ConnectThread;
 import com.arduno.remotebt.core.ConnectedClass;
 import com.arduno.remotebt.core.ConnectedThread;
+import com.arduno.remotebt.core.DataListeningService;
 import com.arduno.remotebt.databinding.ActivityMainBinding;
 import com.arduno.remotebt.dialogs.DialogDevices;
 import com.arduno.remotebt.viewmodel.MyViewModel;
@@ -158,11 +158,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             singleton.setConnectedThread(connectedThread);
             startActivity(new Intent(MainActivity.this, AddRemoteActivity.class));
         });
-        viewModel.getListRemoteControl();
-        viewModel.listRemoteControl.observe(this, remoteControls -> {
-            Log.d(TAG, "initView: " + remoteControls.get(0).getTemp().get(0).getValue());
+        binding.llTemperature.setOnClickListener(v -> connectedThread.send(THG + "\n"));
+        binding.ivRemote.setOnClickListener(v -> {
+            singleton.setConnectedThread(connectedThread);
+            startActivity(new Intent(MainActivity.this, ListRemoteActivity.class));
         });
-        binding.llTemperature.setOnClickListener(v ->  connectedThread.send(THG + "\n"));
     }
 
 

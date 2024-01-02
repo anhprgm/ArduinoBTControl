@@ -1,7 +1,5 @@
 package com.arduno.remotebt.activity;
 
-import android.content.Intent;
-
 import com.arduno.remotebt.base.BaseActivity;
 import com.arduno.remotebt.database.DataModel;
 import com.arduno.remotebt.database.RemoteControl;
@@ -23,14 +21,19 @@ public class AddRemoteActivity extends BaseActivity<ActivityAddRemoteBinding> {
         viewModel = singleton.getViewModel();
 
         binding.monitor.setOnClickListener(v -> {
-            Intent intent = new Intent(this, EditRemoteActivity.class);
-            intent.putExtra(TYPE, Mode.TEMP);
-            startActivity(intent);
+            EditRemoteActivity.startActivity(this, Mode.TEMP);
         });
         binding.power.setOnClickListener(v -> {
-            Intent intent = new Intent(this, EditRemoteActivity.class);
-            intent.putExtra(TYPE, Mode.POWER);
-            startActivity(intent);
+            EditRemoteActivity.startActivity(this, Mode.POWER);
+        });
+        binding.mode.setOnClickListener(v -> {
+            EditRemoteActivity.startActivity(this, Mode.MODE);
+        });
+        binding.fan.setOnClickListener(v -> {
+            EditRemoteActivity.startActivity(this, Mode.FAN);
+        });
+        binding.sleep.setOnClickListener(v -> {
+            EditRemoteActivity.startActivity(this, Mode.SLEEP);
         });
 
         viewModel.modeEdited.observe(this, m -> {
@@ -38,6 +41,8 @@ public class AddRemoteActivity extends BaseActivity<ActivityAddRemoteBinding> {
                 case TEMP -> toast("Temp");
                 case POWER -> toast("Power");
                 case MODE -> toast("Mode");
+                case FAN -> toast("Fan");
+                case SLEEP -> toast("Sleep");
                 default -> toast("Cancel");
             }
         });
@@ -45,6 +50,8 @@ public class AddRemoteActivity extends BaseActivity<ActivityAddRemoteBinding> {
             List<DataModel> temp = viewModel.modeRemoteControlMap.get(Mode.TEMP);
             List<DataModel> power = viewModel.modeRemoteControlMap.get(Mode.POWER);
             List<DataModel> mode = viewModel.modeRemoteControlMap.get(Mode.MODE);
+            List<DataModel> fan = viewModel.modeRemoteControlMap.get(Mode.FAN);
+            List<DataModel> sleep = viewModel.modeRemoteControlMap.get(Mode.SLEEP);
             if (temp == null) {
                 temp = new ArrayList<>();
             }
@@ -54,7 +61,13 @@ public class AddRemoteActivity extends BaseActivity<ActivityAddRemoteBinding> {
             if (mode == null) {
                 mode = new ArrayList<>();
             }
-            viewModel.insertRemoteControl(new RemoteControl(0,"" ,temp, power, mode));
+            if (fan == null) {
+                fan = new ArrayList<>();
+            }
+            if (sleep == null) {
+                sleep = new ArrayList<>();
+            }
+            viewModel.insertRemoteControl(new RemoteControl(0, "", temp, power, mode, fan, sleep));
             viewModel.modeRemoteControlMap = new HashMap<>();
             finish();
         });

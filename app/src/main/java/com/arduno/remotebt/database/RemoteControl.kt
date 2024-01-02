@@ -11,6 +11,8 @@ data class RemoteControl(
     var temp: List<DataModel> = ArrayList(),
     var mode: List<DataModel> = ArrayList(),
     var power: List<DataModel> = ArrayList(),
+    var fan : List<DataModel> = ArrayList(),
+    var sleep: List<DataModel> = ArrayList(),
 )
 
 data class DataModel(

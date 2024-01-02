@@ -20,4 +20,7 @@ interface Dao {
 
     @Query("SELECT * FROM remote_control")
     fun getLiveData(): LiveData<List<RemoteControl>>
+
+    @Query("DELETE FROM remote_control WHERE id = :id")
+    fun delete(id: Int)
 }

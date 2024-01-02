@@ -1,6 +1,7 @@
 package com.arduno.remotebt.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -10,6 +11,7 @@ import com.arduno.remotebt.base.BaseActivity;
 import com.arduno.remotebt.database.DataModel;
 import com.arduno.remotebt.databinding.ActivityEditRemoteBinding;
 import com.arduno.remotebt.dialogs.DialogData;
+import com.arduno.remotebt.dialogs.DialogEditKey;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +22,18 @@ public class EditRemoteActivity extends BaseActivity<ActivityEditRemoteBinding> 
     private EditRemoteAdapter adapter;
     private List<DataModel> list = new ArrayList<>();
     private DialogData dialogData;
+    private DialogEditKey dialogEditKey;
     private Boolean isAddItem = false;
     private DataModel currItem;
     private int currPosition = 0;
 
     private Mode mode;
+
+    public static void startActivity(Context context, Mode mode) {
+        Intent intent = new Intent(context, EditRemoteActivity.class);
+        intent.putExtra(AddRemoteActivity.TYPE, mode);
+        context.startActivity(intent);
+    }
 
     @Override
     public void initView() {
@@ -47,7 +56,12 @@ public class EditRemoteActivity extends BaseActivity<ActivityEditRemoteBinding> 
 
         dialogData =
                 (DialogData) new DialogData.ExtendBuilder(this)
-                        .setCancelable(false)
+                        .setCancelable(true)
+                        .setCanOntouchOutside(false)
+                        .build();
+        dialogEditKey =
+                (DialogEditKey) new DialogEditKey.ExtendBuilder(this)
+                        .setCancelable(true)
                         .setCanOntouchOutside(false)
                         .build();
         viewModel.message.observe(this, m -> {
@@ -55,7 +69,6 @@ public class EditRemoteActivity extends BaseActivity<ActivityEditRemoteBinding> 
                 dialogData.addItemAdapter(m);
             }
         });
-
         initData();
     }
 
@@ -78,17 +91,27 @@ public class EditRemoteActivity extends BaseActivity<ActivityEditRemoteBinding> 
                 adapter.notifyDataSetChanged();
             }
         });
-        adapter.setOnItemClickListener(position -> {
-            isAddItem = true;
+        adapter.setOnItemClickListener((position, type) -> {
             currItem = list.get(position);
             currPosition = position;
-            dialogData.mShow(this);
+            if (Objects.equals(type, "value")) {
+                isAddItem = true;
+                dialogData.mShow(this);
+            } else {
+                dialogEditKey.show();
+            }
         });
         dialogData.setOnDismissListener(b -> isAddItem = false);
+        dialogData.setOnCancelListener(b -> isAddItem = false);
         dialogData.setOnItemClickListener(s -> {
             currItem.setValue(s);
             adapter.setData(currPosition, currItem);
         });
+        dialogEditKey.onClickKey = s -> {
+            currItem.setKey(s);
+            adapter.setData(currPosition, currItem);
+        };
+
         binding.save.setOnClickListener(v -> {
             viewModel.modeRemoteControlMap.put(mode, list);
             viewModel.modeEdited.postValue(mode);

@@ -30,7 +30,7 @@ public class DialogDevices extends BaseDialog<DialogDevicesBinding, DialogDevice
     public void mShow(List<BluetoothDevice> list) {
         devicesAdapter = new DevicesAdapter(getContext(), list);
         binding.rcvDevices.setAdapter(devicesAdapter);
-        devicesAdapter.setOnItemClickListener(position -> {
+        devicesAdapter.setOnItemClickListener((position, t) -> {
             dismiss();
             onItemClickListener.onItemClick(list.get(position));
         });

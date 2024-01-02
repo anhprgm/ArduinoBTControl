@@ -46,12 +46,15 @@ public class EditRemoteAdapter extends BaseRecyclerAdapter<DataModel,
       }
 
       public void bindData(DataModel dataModel, int position) {
-         binding.key.setText(dataModel.getKey());
-         binding.value.setText(dataModel.getValue());
+         binding.key.setText("Key: " + dataModel.getKey());
+         binding.value.setText("Value: " + dataModel.getValue());
          binding.stt.setText("STT: " + (position + 1));
 
          binding.value.setOnClickListener(v -> {
-            onItemClickListener.onItemClick(position);
+            onItemClickListener.onItemClick(position, "value");
+         });
+         binding.key.setOnClickListener(v -> {
+            onItemClickListener.onItemClick(position, "key");
          });
       }
    }

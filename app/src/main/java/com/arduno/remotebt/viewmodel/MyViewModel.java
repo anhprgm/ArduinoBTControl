@@ -41,6 +41,10 @@ public class MyViewModel extends ViewModel {
         repository.getLiveData().observeForever(remoteControls -> listRemoteControl.postValue(remoteControls));
     }
 
+    public void deleteRemoteControl(RemoteControl remoteControl) {
+        repository.delete(remoteControl.getId());
+    }
+
     public void insertRemoteControl(RemoteControl remoteControl) {
         repository.insert(remoteControl);
     }

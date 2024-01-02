@@ -1,5 +1,5 @@
 package com.arduno.remotebt.activity;
 
 public enum Mode {
-    TEMP, POWER, MODE, NONE
+    TEMP, POWER, MODE, FAN, SLEEP, NONE
 }

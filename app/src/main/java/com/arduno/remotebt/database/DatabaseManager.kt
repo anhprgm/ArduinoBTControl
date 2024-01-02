@@ -22,4 +22,8 @@ class DatabaseManager(private var database: Database) : Repository {
     override fun getLiveData(): LiveData<List<RemoteControl>> {
         return database.dao().getLiveData()
     }
+
+    override fun delete(id: Int) {
+        database.dao().delete(id)
+    }
 }

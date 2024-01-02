@@ -50,7 +50,7 @@ public class DevicesAdapter extends BaseRecyclerAdapter<BluetoothDevice,
 
             binding.getRoot().setOnClickListener(v -> {
                 if (onItemClickListener != null) {
-                    onItemClickListener.onItemClick(position);
+                    onItemClickListener.onItemClick(position, "");
                 }
             });
         }
