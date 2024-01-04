@@ -2,6 +2,7 @@ package com.arduno.remotebt.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 @Entity(tableName = "remote_control")
 data class RemoteControl(
@@ -13,7 +14,7 @@ data class RemoteControl(
     var power: List<DataModel> = ArrayList(),
     var fan : List<DataModel> = ArrayList(),
     var sleep: List<DataModel> = ArrayList(),
-)
+) :Serializable
 
 data class DataModel(
     var key: String = "",

@@ -18,9 +18,12 @@
       android:label="@string/app_name"
       android:roundIcon="@mipmap/ic_launcher_round"
       android:supportsRtl="true"
-      android:windowSoftInputMode="adjustResize|stateVisible"
       android:theme="@style/Theme.ArduinoBTExampleLEDControl"
+      android:windowSoftInputMode="adjustResize|stateVisible"
       tools:targetApi="31">
+    <activity
+        android:name=".activity.RemoteActivity"
+        android:exported="false" />
     <activity
         android:name=".activity.ListRemoteActivity"
         android:exported="false" />

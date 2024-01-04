@@ -20,9 +20,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class MyViewModel extends ViewModel {
-    // Declare LiveData
     public MutableLiveData<String> message = new MutableLiveData<>();
-
 
     public MutableLiveData<Set<BluetoothDevice>> listDevices = new MutableLiveData<>();
 
@@ -31,6 +29,7 @@ public class MyViewModel extends ViewModel {
     private Repository repository;
 
     public Map<Mode, List<DataModel>> modeRemoteControlMap = new HashMap<>();
+    public RemoteControl remoteControl = new RemoteControl();
     public MutableLiveData<Mode> modeEdited = new MutableLiveData<>();
 
     public MyViewModel(Application application) {

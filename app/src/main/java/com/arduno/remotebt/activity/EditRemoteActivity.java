@@ -86,7 +86,7 @@ public class EditRemoteActivity extends BaseActivity<ActivityEditRemoteBinding> 
             if (number_of_items > 0) {
                 list.clear();
                 for (int i = 0; i < number_of_items; i++) {
-                    list.add(new DataModel("Key: " + i, "Value: " + i));
+                    list.add(new DataModel(String.valueOf(i), String.valueOf(i)));
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -104,7 +104,8 @@ public class EditRemoteActivity extends BaseActivity<ActivityEditRemoteBinding> 
         dialogData.setOnDismissListener(b -> isAddItem = false);
         dialogData.setOnCancelListener(b -> isAddItem = false);
         dialogData.setOnItemClickListener(s -> {
-            currItem.setValue(s);
+            String value = s.substring(5);
+            currItem.setValue(value);
             adapter.setData(currPosition, currItem);
         });
         dialogEditKey.onClickKey = s -> {

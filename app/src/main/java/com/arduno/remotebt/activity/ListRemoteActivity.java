@@ -37,13 +37,20 @@ public class ListRemoteActivity extends BaseActivity<ActivityListRemoteBinding> 
         viewModel.getListRemoteControl();
 
         adapter.setOnItemClickListener((pos, type) -> {
+            RemoteControl rc = list.get(pos);
             if (type.equals("delete")) {
-                viewModel.deleteRemoteControl(list.get(pos));
+                viewModel.deleteRemoteControl(rc);
             } else if (type.equals("edit")) {
-
-                startActivity(new Intent(this, AddRemoteActivity.class));
+                viewModel.modeRemoteControlMap.put(Mode.TEMP, rc.getTemp());
+                viewModel.modeRemoteControlMap.put(Mode.MODE, rc.getMode());
+                viewModel.modeRemoteControlMap.put(Mode.FAN, rc.getFan());
+                viewModel.modeRemoteControlMap.put(Mode.SLEEP, rc.getSleep());
+                viewModel.modeRemoteControlMap.put(Mode.POWER, rc.getPower());
+                viewModel.remoteControl = rc;
+                startActivity(new Intent(this, AddRemoteActivity.class).putExtra(AddRemoteActivity.EDIT, "EDIT"));
             } else if (type.equals("root")) {
-//                RemoteControlActivity.startActivity(this, list.get(pos));
+                viewModel.remoteControl = rc;
+                startActivity(new Intent(this, RemoteActivity.class));
             }
         });
     }

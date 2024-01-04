@@ -8,7 +8,6 @@ interface Repository {
     fun deleteAll()
     fun getById(id: Int): RemoteControl?
     fun getLiveData(): LiveData<List<RemoteControl>>
-
     fun delete(id: Int)
 
 }
