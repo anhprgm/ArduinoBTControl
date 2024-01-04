@@ -1,7 +1,6 @@
 package com.arduno.remotebt.activity;
 
 import android.content.Intent;
-import android.util.Log;
 
 import com.arduno.remotebt.adpaters.RemoteControlAdapter;
 import com.arduno.remotebt.base.BaseActivity;
@@ -29,7 +28,6 @@ public class ListRemoteActivity extends BaseActivity<ActivityListRemoteBinding> 
         });
 
         viewModel.listRemoteControl.observe(this, list -> {
-            Log.d("TAG", "initView: " + list.toString());
             this.list = list;
             adapter.setList(list);
             adapter.notifyDataSetChanged();

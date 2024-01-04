@@ -8,5 +8,6 @@ public class Constants {
    public static final String TPR = "TPR";
    public static final String HMR = "HMR";
 
-   public static final String THG = "THG";
+   public static final String THG = "THG\n";
+   public static final String BTC = "BTC\n";
 }

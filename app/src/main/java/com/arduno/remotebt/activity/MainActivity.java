@@ -35,6 +35,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.arduno.remotebt.ultils.Constants.BTC;
 import static com.arduno.remotebt.ultils.Constants.HMR;
 import static com.arduno.remotebt.ultils.Constants.THG;
 import static com.arduno.remotebt.ultils.Constants.TPR;
@@ -132,11 +133,14 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                         //valueRead returned by the onNext() from the Observable
                         if (connectedToBTDevice.isConnected()) {
                             Log.d(TAG, "initView: " + "Connected");
+                            toast("Connected");
                             singleton.setMmInputStream(connectedThread.getMmInStream());
                             singleton.setViewModel(viewModel);
 
                             Intent intent = new Intent(this, DataListeningService.class);
                             startService(intent);
+                            connectedThread.send(THG);
+                            connectedThread.send(BTC);
                         }
                     });
         });
@@ -158,7 +162,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             singleton.setConnectedThread(connectedThread);
             startActivity(new Intent(MainActivity.this, AddRemoteActivity.class));
         });
-        binding.llTemperature.setOnClickListener(v -> connectedThread.send(THG + "\n"));
+        binding.llTemperature.setOnClickListener(v -> connectedThread.send(THG));
         binding.ivRemote.setOnClickListener(v -> {
             singleton.setConnectedThread(connectedThread);
             startActivity(new Intent(MainActivity.this, ListRemoteActivity.class));
