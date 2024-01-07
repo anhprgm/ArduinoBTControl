@@ -39,6 +39,7 @@ import static com.arduno.remotebt.ultils.Constants.BTC;
 import static com.arduno.remotebt.ultils.Constants.HMR;
 import static com.arduno.remotebt.ultils.Constants.THG;
 import static com.arduno.remotebt.ultils.Constants.TPR;
+import static com.arduno.remotebt.ultils.PermissionUtils.requestRuntimePermission;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
@@ -84,7 +85,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             if (connectThread.getMmSocket().isConnected()) {
                 connectedThread = new ConnectedThread(connectThread.getMmSocket());
                 singleton.setBluetoothSocket(connectThread.getMmSocket());
-                if(connectedThread.getMmInStream() != null && connectedThread!= null) {
+                if (connectedThread.getMmInStream() != null && connectedThread != null) {
                     ConnectedClass connected = new ConnectedClass();
                     connected.setConnected(true);
                     emitter.onNext(connected);
@@ -97,22 +98,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             if (bluetoothAdapter == null) {
                 Log.d(TAG, "Device doesn't support Bluetooth");
             } else {
-                Log.d(TAG, "Device support Bluetooth");
-                if (!bluetoothAdapter.isEnabled()) {
-                    Log.d(TAG, "Bluetooth is disabled");
-                    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                    if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                        Log.d(TAG, "We don't BT Permissions");
-                        startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-                        Log.d(TAG, "Bluetooth is enabled now");
-                    } else {
-                        Log.d(TAG, "We have BT Permissions");
-                        startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-                        Log.d(TAG, "Bluetooth is enabled now");
-                    }
-
-                } else {
-                    Log.d(TAG, "Bluetooth is enabled");
+                requestRuntimePermission(this, Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.BLUETOOTH_CONNECT);
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+                    return;
                 }
                 Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
                 List<BluetoothDevice> listDevices = new ArrayList<>(pairedDevices);
@@ -166,6 +154,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         binding.ivRemote.setOnClickListener(v -> {
             singleton.setConnectedThread(connectedThread);
             startActivity(new Intent(MainActivity.this, ListRemoteActivity.class));
+        });
+        binding.ivRemote.setOnLongClickListener(v -> {
+            singleton.setConnectedThread(connectedThread);
+            startActivity(new Intent(MainActivity.this, ConfigureLed.class));
+            return true;
         });
     }
 

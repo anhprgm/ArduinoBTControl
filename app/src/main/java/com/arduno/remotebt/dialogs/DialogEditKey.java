@@ -29,6 +29,10 @@ public class DialogEditKey extends BaseDialog<DialogEditKeyBinding, DialogEditKe
       });
    }
 
+   public void mShow(String s) {
+      binding.title.setText(s);
+      show();
+   }
    public static class ExtendBuilder extends BuilderDialog {
       public ExtendBuilder(Context context) {
          super(context);

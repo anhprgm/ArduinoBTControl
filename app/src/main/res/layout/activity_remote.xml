@@ -4,7 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".activity.AddRemoteActivity">
+
+  <ImageView
+      android:id="@+id/send"
+      android:layout_width="50dp"
+      android:layout_height="50dp"
+      android:layout_marginTop="10dp"
+      android:src="@drawable/transfer_svgrepo_com"
+      android:visibility="invisible"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
 
   <androidx.appcompat.widget.AppCompatImageView
       android:id="@+id/cancel"
@@ -33,6 +45,72 @@
       app:layout_constraintTop_toBottomOf="@id/cancel"
       app:layout_constraintWidth_percent="0.6" />
 
+  <LinearLayout
+      android:id="@+id/linearLayout"
+      android:layout_width="0dp"
+      android:layout_height="50dp"
+      android:background="#D8D8D8"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/monitor"
+      app:layout_constraintWidth_percent="0.6">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_mode"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:padding="2dp"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:text="mode"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/iv_fan"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:padding="2dp"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:text="fan"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/iv_sleep"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:padding="2dp"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:text="sleep"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+  </LinearLayout>
+
   <androidx.appcompat.widget.AppCompatImageView
       android:id="@+id/up"
       android:layout_width="0dp"
@@ -42,20 +120,19 @@
       app:layout_constraintDimensionRatio="1:1"
       app:layout_constraintEnd_toEndOf="@+id/power"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/monitor"
+      app:layout_constraintTop_toBottomOf="@id/linearLayout"
       app:layout_constraintWidth_percent="0.2" />
 
   <androidx.appcompat.widget.AppCompatImageView
       android:id="@+id/down"
       android:layout_width="0dp"
       android:layout_height="0dp"
-      android:layout_marginTop="10dp"
       android:rotation="180"
       android:src="@drawable/up_circle"
       app:layout_constraintDimensionRatio="1:1"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="@+id/power"
-      app:layout_constraintTop_toBottomOf="@+id/monitor"
+      app:layout_constraintTop_toTopOf="@id/up"
       app:layout_constraintWidth_percent="0.2" />
 
   <androidx.appcompat.widget.AppCompatImageView

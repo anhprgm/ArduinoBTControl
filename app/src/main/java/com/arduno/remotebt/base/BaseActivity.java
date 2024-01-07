@@ -33,4 +33,6 @@ public abstract class BaseActivity<VB extends ViewBinding> extends AppCompatActi
    public void toast(String message) {
       Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
    }
+
+
 }

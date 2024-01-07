@@ -7,16 +7,22 @@ import com.arduno.remotebt.base.BaseActivity;
 import com.arduno.remotebt.database.DataModel;
 import com.arduno.remotebt.database.RemoteControl;
 import com.arduno.remotebt.databinding.ActivityAddRemoteBinding;
+import com.arduno.remotebt.dialogs.DialogEditKey;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class AddRemoteActivity extends BaseActivity<ActivityAddRemoteBinding> {
-
+    private DialogEditKey dialogEditKey;
     public static final String TYPE = "type";
     public static final String EDIT = "EDIT";
     private Boolean isEdit = false;
+    List<DataModel> temp;
+    List<DataModel> power;
+    List<DataModel> mode;
+    List<DataModel> fan;
+    List<DataModel> sleep;
 
     @Override
     public void initView() {
@@ -30,7 +36,12 @@ public class AddRemoteActivity extends BaseActivity<ActivityAddRemoteBinding> {
                 }
             }
         }
-
+        Log.d("TAG", "initView: " + isEdit);
+        dialogEditKey =
+                (DialogEditKey) new DialogEditKey.ExtendBuilder(this)
+                        .setCancelable(true)
+                        .setCanOntouchOutside(false)
+                        .build();
 
         binding.monitor.setOnClickListener(v -> {
             EditRemoteActivity.startActivity(this, Mode.TEMP);
@@ -49,6 +60,8 @@ public class AddRemoteActivity extends BaseActivity<ActivityAddRemoteBinding> {
         });
 
         binding.cancel.setOnClickListener(v -> {
+            viewModel.modeRemoteControlMap.clear();
+            viewModel.remoteControl = null;
             finish();
         });
 
@@ -62,13 +75,13 @@ public class AddRemoteActivity extends BaseActivity<ActivityAddRemoteBinding> {
                 default -> toast("Cancel");
             }
         });
-        binding.save.setOnClickListener(v -> {
-            Log.d("TAG", "initView: " + isEdit);
-            List<DataModel> temp = viewModel.modeRemoteControlMap.get(Mode.TEMP);
-            List<DataModel> power = viewModel.modeRemoteControlMap.get(Mode.POWER);
-            List<DataModel> mode = viewModel.modeRemoteControlMap.get(Mode.MODE);
-            List<DataModel> fan = viewModel.modeRemoteControlMap.get(Mode.FAN);
-            List<DataModel> sleep = viewModel.modeRemoteControlMap.get(Mode.SLEEP);
+        binding.save.setOnClickListener(view -> {
+
+            temp = viewModel.modeRemoteControlMap.get(Mode.TEMP);
+            power = viewModel.modeRemoteControlMap.get(Mode.POWER);
+            mode = viewModel.modeRemoteControlMap.get(Mode.MODE);
+            fan = viewModel.modeRemoteControlMap.get(Mode.FAN);
+            sleep = viewModel.modeRemoteControlMap.get(Mode.SLEEP);
             if (temp == null) {
                 temp = new ArrayList<>();
             }
@@ -85,6 +98,7 @@ public class AddRemoteActivity extends BaseActivity<ActivityAddRemoteBinding> {
                 sleep = new ArrayList<>();
             }
             if (isEdit) {
+
                 viewModel.remoteControl.setTemp(temp);
                 viewModel.remoteControl.setPower(power);
                 viewModel.remoteControl.setMode(mode);
@@ -92,13 +106,21 @@ public class AddRemoteActivity extends BaseActivity<ActivityAddRemoteBinding> {
                 viewModel.remoteControl.setSleep(sleep);
                 viewModel.insertRemoteControl(viewModel.remoteControl);
                 viewModel.remoteControl = null;
-            } else {
-                viewModel.insertRemoteControl(new RemoteControl(0, "", temp, power, mode, fan, sleep));
-            }
-            viewModel.modeRemoteControlMap = new HashMap<>();
+                viewModel.modeRemoteControlMap = new HashMap<>();
+                finish();
 
-            finish();
+            } else {
+                dialogEditKey.mShow("Nhập tên điều khiển");
+
+            }
+
         });
+        dialogEditKey.onClickKey = s -> {
+            viewModel.insertRemoteControl(new RemoteControl(0, s, temp, power, mode, fan,
+                    sleep));
+            viewModel.modeRemoteControlMap = new HashMap<>();
+            finish();
+        };
     }
 
     @Override

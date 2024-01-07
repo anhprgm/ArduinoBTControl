@@ -47,6 +47,7 @@ public class RemoteControlAdapter extends BaseRecyclerAdapter<RemoteControl,
          binding.edit.setOnClickListener(v -> {
             onItemClickListener.onItemClick(position, "edit");
          });
+         binding.title.setText(remoteControl.getNameRemoteControl());
          binding.getRoot().setOnClickListener(v -> {
             onItemClickListener.onItemClick(position, "root");
          });

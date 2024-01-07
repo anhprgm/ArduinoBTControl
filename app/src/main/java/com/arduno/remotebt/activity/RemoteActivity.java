@@ -3,7 +3,9 @@ package com.arduno.remotebt.activity;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.icu.util.Calendar;
+import android.os.Handler;
 import android.util.Log;
+import android.view.View;
 
 import com.arduno.remotebt.TimerService;
 import com.arduno.remotebt.base.BaseActivity;
@@ -46,7 +48,9 @@ public class RemoteActivity extends BaseActivity<ActivityRemoteBinding> {
                 return;
             }
             Log.d(TAG, Constants.IR_Send + rc.getMode().get(currItemMode).getValue() + "\n");
+            binding.tvMode.setText(rc.getMode().get(currItemMode).getKey());
             connectedThread.send(Constants.IR_Send + rc.getMode().get(currItemMode).getValue() + "\n");
+            sendVisible();
             currItemMode++;
             if (currItemMode == rc.getMode().size()) {
                 currItemMode = 0;
@@ -59,7 +63,9 @@ public class RemoteActivity extends BaseActivity<ActivityRemoteBinding> {
             }
 
             Log.d(TAG, Constants.IR_Send + rc.getFan().get(currItemFan).getValue() + "\n");
+            binding.ivFan.setText(rc.getFan().get(currItemFan).getKey());
             connectedThread.send(Constants.IR_Send + rc.getFan().get(currItemFan).getValue() + "\n");
+            sendVisible();
             currItemFan++;
             if (currItemFan == rc.getFan().size()) {
                 currItemFan = 0;
@@ -70,9 +76,10 @@ public class RemoteActivity extends BaseActivity<ActivityRemoteBinding> {
                 toast("Chưa có chế độ nào được cài đặt");
                 return;
             }
-
+            binding.ivSleep.setText(rc.getSleep().get(currItemSleep).getKey());
             Log.d(TAG, Constants.IR_Send + rc.getSleep().get(currItemSleep).getValue() + "\n");
             connectedThread.send(Constants.IR_Send + rc.getSleep().get(currItemSleep).getValue() + "\n");
+            sendVisible();
             currItemSleep++;
             if (currItemSleep == rc.getSleep().size()) {
                 currItemSleep = 0;
@@ -85,6 +92,7 @@ public class RemoteActivity extends BaseActivity<ActivityRemoteBinding> {
             }
             Log.d(TAG, Constants.IR_Send + rc.getPower().get(currItemPower).getValue() + "\n");
             connectedThread.send(Constants.IR_Send + rc.getPower().get(currItemPower).getValue() + "\n");
+            sendVisible();
             currItemPower++;
             if (currItemPower == rc.getPower().size()) {
                 currItemPower = 0;
@@ -97,6 +105,7 @@ public class RemoteActivity extends BaseActivity<ActivityRemoteBinding> {
             }
             Log.d(TAG, Constants.IR_Send + rc.getTemp().get(currItemTemp).getValue() + "\n");
             connectedThread.send(Constants.IR_Send + rc.getTemp().get(currItemTemp).getValue() + "\n");
+            sendVisible();
             binding.monitor.setText(rc.getTemp().get(currItemTemp).getKey() + "°C");
             if (currItemTemp < rc.getTemp().size() - 1) {
                 currItemTemp++;
@@ -110,6 +119,7 @@ public class RemoteActivity extends BaseActivity<ActivityRemoteBinding> {
             Log.d(TAG, Constants.IR_Send + rc.getTemp().get(currItemTemp).getValue() + "\n");
             binding.monitor.setText(rc.getTemp().get(currItemTemp).getKey() + "°C");
             connectedThread.send(Constants.IR_Send + rc.getTemp().get(currItemTemp).getValue() + "\n");
+            sendVisible();
             if (currItemTemp > 1) {
                 currItemTemp--;
             }
@@ -141,7 +151,7 @@ public class RemoteActivity extends BaseActivity<ActivityRemoteBinding> {
                     }
                     dialogData.mShow(this);
                     for (int i = 0; i < rc.getPower().size(); i++) {
-                        dialogData.addItemAdapter(Constants.IR_Send + rc.getPower().get(i).getValue() + "\n");
+                        dialogData.addItemAdapter(rc.getPower().get(i).getKey() + " " + rc.getPower().get(i).getValue() + "\n");
                     }
                     delayMillis = calendar.getTimeInMillis() - System.currentTimeMillis();
                 }, hour, minute, false);
@@ -159,5 +169,13 @@ public class RemoteActivity extends BaseActivity<ActivityRemoteBinding> {
     @Override
     protected ActivityRemoteBinding getBinding() {
         return ActivityRemoteBinding.inflate(getLayoutInflater());
+    }
+
+    void sendVisible() {
+        if (binding.send.getVisibility() != View.VISIBLE) {
+            Handler handler = new Handler();
+            handler.postDelayed(() -> binding.send.setVisibility(View.GONE), 1000);
+        }
+        binding.send.setVisibility(View.VISIBLE);
     }
 }
